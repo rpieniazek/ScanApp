@@ -94,10 +94,8 @@ public class MainActivity extends AppCompatActivity implements MainView {
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
         if (requestCode == 0) {
             if (resultCode == RESULT_OK) {
-
                 String contents = intent.getStringExtra("SCAN_RESULT");
                 //String format = intent.getStringExtra("SCAN_RESULT_FORMAT");
-
                 mainPresenter.generateQRCode(contents);
             }
         }
