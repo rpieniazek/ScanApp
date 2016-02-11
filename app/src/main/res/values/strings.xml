@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">ScanApp</string>
+    <string name="validate">VALIDATE</string>
 </resources>
