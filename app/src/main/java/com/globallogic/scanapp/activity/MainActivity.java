@@ -10,7 +10,9 @@ import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.globallogic.scanapp.R;
@@ -33,16 +35,40 @@ public class MainActivity extends AppCompatActivity implements MainView {
     static final String ACTION_SCAN = "com.google.zxing.client.android.SCAN";
 
     private MainPresenterImpl mainPresenter;
+    private Button button;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mainPresenter = new MainPresenterImpl(this);
+        button = (Button) findViewById(R.id.scan_button);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(button.getText().equals(R.string.validate)){
+                    validate();
+                }else{
+                    scanBar();
+                }
+            }
+        });
+    }
+
+    private void validate() {
+        try {
+            //start the scanning activity from the com.google.zxing.client.android.SCAN intent
+            Intent intent = new Intent(ACTION_SCAN);
+            // intent.putExtra("SCAN_MODE", "PRODUCT_MODE");
+            startActivityForResult(intent, 1);
+        } catch (ActivityNotFoundException anfe) {
+            //on catch, show the download dialog
+            showDialog(MainActivity.this, "No Scanner Found", "Download a scanner code activity?", "Yes", "No").show();
+        }
     }
 
     //product barcode mode
-    public void scanBar(View v) {
+    public void scanBar() {
         try {
             //start the scanning activity from the com.google.zxing.client.android.SCAN intent
             Intent intent = new Intent(ACTION_SCAN);
@@ -54,18 +80,6 @@ public class MainActivity extends AppCompatActivity implements MainView {
         }
     }
 
-    //product qr code mode
-//    public void scanQR(View v) {
-//        try {
-//            //start the scanning activity from the com.google.zxing.client.android.SCAN intent
-//            Intent intent = new Intent(ACTION_SCAN);
-//            intent.putExtra("SCAN_MODE", "QR_CODE_MODE");
-//            startActivityForResult(intent, 0);
-//        } catch (ActivityNotFoundException anfe) {
-//            //on catch, show the download dialog
-//            showDialog(MainActivity.this, "No Scanner Found", "Download a scanner code activity?", "Yes", "No").show();
-//        }
-//    }
 
     //alert dialog for downloadDialog
     private static AlertDialog showDialog(final Activity act, CharSequence title, CharSequence message, CharSequence buttonYes, CharSequence buttonNo) {
@@ -95,18 +109,30 @@ public class MainActivity extends AppCompatActivity implements MainView {
         if (requestCode == 0) {
             if (resultCode == RESULT_OK) {
                 String contents = intent.getStringExtra("SCAN_RESULT");
-                //String format = intent.getStringExtra("SCAN_RESULT_FORMAT");
                 mainPresenter.generateQRCode(contents);
             }
+        }else if (requestCode == 1){
+           // Intent intent = new Intent(this,
+            //intent.putExtra("VALID")
+            //
         }
     }
 
     @Override
     public void setQRCode(Bitmap bitmap) {
         ImageView qrCode = (ImageView) findViewById(R.id.qr_code);
-        findViewById(R.id.scan_button).setVisibility(View.GONE);
+
+
+        button.setText(R.string.validate);
 
         qrCode.setVisibility(View.VISIBLE);
         qrCode.setImageBitmap(bitmap);
+    }
+
+    @Override
+    public void setMedicineDetails(String medicine) {
+        TextView textView = (TextView) findViewById(R.id.details);
+        textView.setVisibility(View.VISIBLE);
+        textView.setText(medicine);
     }
 }

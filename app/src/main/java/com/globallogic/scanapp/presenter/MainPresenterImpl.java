@@ -30,19 +30,25 @@ public class MainPresenterImpl implements MainPresenter {
         this.mainView = mainView;
     }
 
+
+
     public void generateQRCode(String barcode) {
-        Medicine medicine = MedicineService.getInstance().getMedicineByCode(barcode);
-        String info = medicine.getDescription();
 
         try {
+            String info = findMedicineWithBarcode(barcode).getDescription();
             QRCodeGenerator qrCodeGenerator  = QRCodeGenerator.getInstance();
             Bitmap bitmap = qrCodeGenerator.encodeAsBitmap(info, BarcodeFormat.QR_CODE, 600, 300);
             mainView.setQRCode(bitmap);
+            mainView.setMedicineDetails(info);
         } catch (WriterException e) {
             e.printStackTrace();
         }
     }
 
+    @Override
+    public Medicine findMedicineWithBarcode(String barcode) {
+        return MedicineService.getInstance().getMedicineByCode(barcode);
+    }
 
 
 }

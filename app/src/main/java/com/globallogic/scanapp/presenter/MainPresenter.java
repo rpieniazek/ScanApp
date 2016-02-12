@@ -8,5 +8,5 @@ import com.globallogic.scanapp.model.Medicine;
 public interface MainPresenter {
 
     void generateQRCode(String barcode);
-
-    }
+    Medicine findMedicineWithBarcode(String barcode);
+}

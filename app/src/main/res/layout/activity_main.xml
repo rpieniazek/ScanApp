@@ -11,8 +11,6 @@
 
 
 
-
-
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="250dp"
@@ -28,10 +26,18 @@
         android:layout_gravity="center"
         android:layout_margin="10dp"
         android:gravity="center"
-        android:onClick="scanBar"
         android:text="scan barcode to generate QR"
-
         android:textSize="18dp" >
 
     </Button>
+
+    <TextView
+        android:id="@+id/details"
+        android:layout_width="match_parent"
+        android:layout_height="75dp"
+        android:text="INFO"
+        android:gravity="center"
+        android:textSize="26dp"
+        android:visibility="invisible"
+        />
 </LinearLayout>

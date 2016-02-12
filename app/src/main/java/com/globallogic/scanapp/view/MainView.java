@@ -10,4 +10,6 @@ import java.util.BitSet;
 public interface MainView {
 
     void setQRCode(Bitmap bitmap);
+
+    void setMedicineDetails(String medicine);
 }

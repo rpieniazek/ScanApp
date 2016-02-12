@@ -29,7 +29,7 @@ public class Medicine {
     private String lozenge;
 
     public String getDescription(){
-        return "Very important desciption with Barcode like "+barcode;
+        return "ibalgin|400|2x400mg|zentiva|tbl_flm";
     }
 
     public String getType() {
