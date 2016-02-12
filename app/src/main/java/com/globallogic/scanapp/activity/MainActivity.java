@@ -7,27 +7,17 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.globallogic.scanapp.R;
-import com.globallogic.scanapp.model.Medicine;
 import com.globallogic.scanapp.presenter.MainPresenterImpl;
-import com.globallogic.scanapp.service.MedicineService;
 import com.globallogic.scanapp.view.MainView;
-import com.google.zxing.BarcodeFormat;
-import com.google.zxing.EncodeHintType;
-import com.google.zxing.MultiFormatWriter;
-import com.google.zxing.WriterException;
-import com.google.zxing.common.BitMatrix;
-
-import java.util.EnumMap;
-import java.util.Map;
 
 public class MainActivity extends AppCompatActivity implements MainView {
 
@@ -46,7 +36,9 @@ public class MainActivity extends AppCompatActivity implements MainView {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (button.getText().equals(R.string.validate)) {
+                Log.i("TAG", "button text: " + button.getText() + ", R. string: " + getString(R.string.validate));
+
+                if (button.getText().equals(getString(R.string.validate))) {
                     validate();
                 } else {
                     scanBar();
@@ -60,6 +52,8 @@ public class MainActivity extends AppCompatActivity implements MainView {
             //start the scanning activity from the com.google.zxing.client.android.SCAN intent
             Intent intent = new Intent(ACTION_SCAN);
             // intent.putExtra("SCAN_MODE", "PRODUCT_MODE");
+            Log.i("TAG", "in validate 1");
+
             startActivityForResult(intent, 1);
         } catch (ActivityNotFoundException anfe) {
             //on catch, show the download dialog
@@ -105,25 +99,33 @@ public class MainActivity extends AppCompatActivity implements MainView {
     }
 
     //on ActivityResult method
+    @Override
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
+        Log.i("TAG", "request code: "+requestCode);
+
         if (requestCode == 0) {
             if (resultCode == RESULT_OK) {
                 String contents = intent.getStringExtra("SCAN_RESULT");
                 mainPresenter.generateQRCode(contents);
-            } else if (requestCode == 1) {
-                String contents = intent.getStringExtra("SCAN_RESULT");
-                mainPresenter.validateData();
+                Log.i("TAG", "MainActivity.onActivityResult() = 0");
             }
+
+        } else if (requestCode == 1) {
+//            if (resultCode == RESULT_OK) {
+             Log.i("TAG", "MainActivity.onActivityResult() = 1");
+                String contents = intent.getStringExtra("SCAN_RESULT");
+                mainPresenter.validateData(contents);
+
+          //  }
         }
+
+
     }
 
     @Override
     public void setQRCode(Bitmap bitmap) {
         ImageView qrCode = (ImageView) findViewById(R.id.qr_code);
-
-
         button.setText(R.string.validate);
-
         qrCode.setVisibility(View.VISIBLE);
         qrCode.setImageBitmap(bitmap);
     }
@@ -137,8 +139,8 @@ public class MainActivity extends AppCompatActivity implements MainView {
 
     @Override
     public void startValidateResultActivity(boolean valid) {
-        Intent intent = new Intent(this,ValidateActivity.class);
-        intent.putExtra("VALID",valid);
+            Intent intent = new Intent(this, ValidateActivity.class);
+        intent.putExtra("VALID", valid);
         startActivity(intent);
     }
 }

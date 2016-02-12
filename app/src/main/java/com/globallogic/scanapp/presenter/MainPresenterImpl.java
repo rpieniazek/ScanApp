@@ -2,6 +2,7 @@ package com.globallogic.scanapp.presenter;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.util.Log;
 import android.view.View;
 
 import com.globallogic.scanapp.R;
@@ -24,7 +25,6 @@ import java.util.Map;
 public class MainPresenterImpl implements MainPresenter {
 
 
-
     MainView mainView;
 
     public MainPresenterImpl(MainView mainView) {
@@ -32,12 +32,11 @@ public class MainPresenterImpl implements MainPresenter {
     }
 
 
-
     public void generateQRCode(String barcode) {
 
         try {
             String info = findMedicineWithBarcode(barcode).getDescription();
-            QRCodeGenerator qrCodeGenerator  = QRCodeGenerator.getInstance();
+            QRCodeGenerator qrCodeGenerator = QRCodeGenerator.getInstance();
             Bitmap bitmap = qrCodeGenerator.encodeAsBitmap(info, BarcodeFormat.QR_CODE, 600, 300);
             mainView.setQRCode(bitmap);
             mainView.setMedicineDetails(info);
@@ -52,9 +51,10 @@ public class MainPresenterImpl implements MainPresenter {
     }
 
     @Override
-    public void validateData() {
+    public void validateData(String data) {
         boolean valid;
-      mainView.startValidateResultActivity(true);
+        mainView.startValidateResultActivity(true);
+        Log.i("TAG", "MainPresenter.validateData()");
 
     }
 
