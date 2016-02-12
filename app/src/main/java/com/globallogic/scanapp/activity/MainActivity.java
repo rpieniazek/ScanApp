@@ -139,7 +139,7 @@ public class MainActivity extends AppCompatActivity implements MainView {
 
     @Override
     public void startValidateResultActivity(boolean valid) {
-            Intent intent = new Intent(this, ValidateActivity.class);
+        Intent intent = new Intent(this, ValidateActivity.class);
         intent.putExtra("VALID", valid);
         startActivity(intent);
     }

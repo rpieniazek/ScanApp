@@ -17,11 +17,15 @@ public class ValidateActivity extends AppCompatActivity {
 
         boolean success = getIntent().getExtras().getBoolean("VALID");
         ImageView img = (ImageView) findViewById(R.id.imageView);
+        TextView text = (TextView) findViewById(R.id.textView);
+
         if (success) {
             img.setImageResource(R.drawable.success);
+            text.setText("Success");
 
         }else{
             img.setImageResource(R.drawable.unsuccess);
+            text.setText("Fail");
         }
     }
 }

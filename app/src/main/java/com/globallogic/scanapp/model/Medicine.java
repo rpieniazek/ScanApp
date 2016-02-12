@@ -6,7 +6,7 @@ package com.globallogic.scanapp.model;
 
 public class Medicine {
 
-    public Medicine(String type, int strong,String barcode) {
+    public Medicine(String qrcode) {
         this.type = type;
         this.strong = strong;
         this.barcode = barcode;
@@ -15,8 +15,12 @@ public class Medicine {
         producer = "zentiva";
         lozenge = "lozenge";
 
+        this.qrcode = qrcode;
+
     }
     private String barcode;
+
+    private String qrcode;
 
     private String type;
 
@@ -29,7 +33,8 @@ public class Medicine {
     private String lozenge;
 
     public String getDescription(){
-        return "ibalgin|400|2x400mg|zentiva|tbl_flm";
+        return this.qrcode;
+//        return "ibalgin|400|2x400mg|zentiva|tbl_flm";
     }
 
     public String getType() {
