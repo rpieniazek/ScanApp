@@ -9,5 +9,5 @@ public interface MainPresenter {
 
     void generateQRCode(String barcode);
     Medicine findMedicineWithBarcode(String barcode);
-    void validateData(String data);
+    void validateData(String readData, String storedData);
 }

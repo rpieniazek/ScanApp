@@ -5,9 +5,11 @@ import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -101,25 +103,28 @@ public class MainActivity extends AppCompatActivity implements MainView {
     //on ActivityResult method
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
-        Log.i("TAG", "request code: "+requestCode);
 
         if (requestCode == 0) {
             if (resultCode == RESULT_OK) {
                 String contents = intent.getStringExtra("SCAN_RESULT");
                 mainPresenter.generateQRCode(contents);
-                Log.i("TAG", "MainActivity.onActivityResult() = 0");
+                storeDescription(contents);
             }
 
         } else if (requestCode == 1) {
-//            if (resultCode == RESULT_OK) {
-             Log.i("TAG", "MainActivity.onActivityResult() = 1");
+            if (resultCode == RESULT_OK) {
                 String contents = intent.getStringExtra("SCAN_RESULT");
-                mainPresenter.validateData(contents);
+                String storedData = PreferenceManager.getDefaultSharedPreferences(this).getString("DESCRIPTION", "no data");
+                mainPresenter.validateData(contents, storedData);
 
-          //  }
+            }
         }
 
 
+    }
+
+    private void storeDescription(String description) {
+        PreferenceManager.getDefaultSharedPreferences(this).edit().putString("DESCRIPTION", description).commit();
     }
 
     @Override
