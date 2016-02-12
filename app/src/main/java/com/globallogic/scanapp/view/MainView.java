@@ -12,4 +12,6 @@ public interface MainView {
     void setQRCode(Bitmap bitmap);
 
     void setMedicineDetails(String medicine);
+
+    void startValidateResultActivity(boolean valid);
 }

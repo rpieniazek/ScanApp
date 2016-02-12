@@ -1,5 +1,6 @@
 package com.globallogic.scanapp.presenter;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.view.View;
 
@@ -48,6 +49,13 @@ public class MainPresenterImpl implements MainPresenter {
     @Override
     public Medicine findMedicineWithBarcode(String barcode) {
         return MedicineService.getInstance().getMedicineByCode(barcode);
+    }
+
+    @Override
+    public void validateData() {
+        boolean valid;
+      mainView.startValidateResultActivity(true);
+
     }
 
 

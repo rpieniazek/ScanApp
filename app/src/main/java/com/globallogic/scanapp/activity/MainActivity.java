@@ -46,9 +46,9 @@ public class MainActivity extends AppCompatActivity implements MainView {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(button.getText().equals(R.string.validate)){
+                if (button.getText().equals(R.string.validate)) {
                     validate();
-                }else{
+                } else {
                     scanBar();
                 }
             }
@@ -72,7 +72,7 @@ public class MainActivity extends AppCompatActivity implements MainView {
         try {
             //start the scanning activity from the com.google.zxing.client.android.SCAN intent
             Intent intent = new Intent(ACTION_SCAN);
-           // intent.putExtra("SCAN_MODE", "PRODUCT_MODE");
+            // intent.putExtra("SCAN_MODE", "PRODUCT_MODE");
             startActivityForResult(intent, 0);
         } catch (ActivityNotFoundException anfe) {
             //on catch, show the download dialog
@@ -110,11 +110,10 @@ public class MainActivity extends AppCompatActivity implements MainView {
             if (resultCode == RESULT_OK) {
                 String contents = intent.getStringExtra("SCAN_RESULT");
                 mainPresenter.generateQRCode(contents);
+            } else if (requestCode == 1) {
+                String contents = intent.getStringExtra("SCAN_RESULT");
+                mainPresenter.validateData();
             }
-        }else if (requestCode == 1){
-           // Intent intent = new Intent(this,
-            //intent.putExtra("VALID")
-            //
         }
     }
 
@@ -134,5 +133,12 @@ public class MainActivity extends AppCompatActivity implements MainView {
         TextView textView = (TextView) findViewById(R.id.details);
         textView.setVisibility(View.VISIBLE);
         textView.setText(medicine);
+    }
+
+    @Override
+    public void startValidateResultActivity(boolean valid) {
+        Intent intent = new Intent(this,ValidateActivity.class);
+        intent.putExtra("VALID",valid);
+        startActivity(intent);
     }
 }
